@@ -3,11 +3,13 @@ package com.mursitaffandi.mursitaffandi_baking.adapter;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.mursitaffandi.mursitaffandi_baking.ApplicationBase;
 import com.mursitaffandi.mursitaffandi_baking.R;
 import com.mursitaffandi.mursitaffandi_baking.event.RecyclerClick_food;
 import com.mursitaffandi.mursitaffandi_baking.model.Baking;
@@ -33,18 +35,11 @@ public class Recyclerfood_adapter extends RecyclerView.Adapter<Recyclerfood_adap
     @Override
     public void onBindViewHolder(Food holder, int position) {
         Baking baking = mMultiBaking.getBaking().get(holder.getAdapterPosition());
-        Context context = holder.itemView.getContext();
 
         holder.foodName.setText(baking.getName());
-
-        /*if (baking.getIngredients().size() == 1) holder.foodIngredient.setText(context.getString(R.string.recipe_ingredient_singular, baking.getIngredients().size()));
-        else holder.recipeIngredient.setText(context.getString(R.string.recipe_ingredient_plural, recipe.getIngredients().size()));
-
-        if (recipe.getSteps().size() == 1) holder.recipeStep.setText(context.getString(R.string.recipe_step_singular, recipe.getSteps().size()));
-        else holder.recipeStep.setText(context.getString(R.string.recipe_step_plural, recipe.getSteps().size()));
-
-        if (recipe.getServings() == 1) holder.recipeServing.setText(context.getString(R.string.recipe_serving_singular, recipe.getServings()));
-        else holder.recipeServing.setText(context.getString(R.string.recipe_serving_plural, recipe.getServings()));*/
+        holder.foodIngredient.setText(baking.getIngredients().size() +" "+ ApplicationBase.getInstance().getString(R.string.ingredient));
+        holder.foodStep.setText(baking.getSteps().size() + " " +ApplicationBase.getInstance().getString(R.string.step));
+        holder.foodServing.setText(String.valueOf(baking.getServings())+ " "+  ApplicationBase.getInstance().getString(R.string.servingfor));
     }
 
     @Override

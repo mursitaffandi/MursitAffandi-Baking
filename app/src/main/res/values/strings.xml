@@ -8,4 +8,7 @@
     <string name="food_servings">serving for</string>
     <string name="title_activity_detail_food">DetailFoodActivity</string>
     <string name="action_settings">Settings</string>
+    <string name="ingredient"> ingredient</string>
+    <string name="step"> step</string>
+    <string name="servingfor"> serving</string>
 </resources>

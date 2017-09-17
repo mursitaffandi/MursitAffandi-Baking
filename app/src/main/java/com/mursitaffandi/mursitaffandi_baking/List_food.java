@@ -12,6 +12,7 @@ import com.mursitaffandi.mursitaffandi_baking.adapter.Recyclerfood_adapter;
 import com.mursitaffandi.mursitaffandi_baking.event.RecyclerClick_food;
 import com.mursitaffandi.mursitaffandi_baking.model.Baking;
 import com.mursitaffandi.mursitaffandi_baking.model.MultiBaking;
+import com.mursitaffandi.mursitaffandi_baking.utilities.ConstantFunc;
 import com.mursitaffandi.mursitaffandi_baking.utilities.ConstantString;
 
 import org.greenrobot.eventbus.EventBus;
@@ -40,6 +41,7 @@ public class List_food extends AppCompatActivity implements RecyclerClick_food{
     public void onFoodSelected(Baking food) {
         Intent gotoDetail = new Intent(this, DetailFoodActivity.class);
         gotoDetail.putExtra(ConstantString.TAG_FOOD, food);
-        startActivity(gotoDetail);
+        //startActivity(gotoDetail);
+        Log.d("display_metric", String.valueOf(ConstantFunc.getColumnWith()));
     }
 }
