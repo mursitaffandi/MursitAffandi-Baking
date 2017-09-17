@@ -11,4 +11,6 @@
     <string name="ingredient"> ingredient</string>
     <string name="step"> step</string>
     <string name="servingfor"> serving</string>
+    <string name="title_detailfood_list">Baking</string>
+    <string name="title_detailfood_detail">DetailFood Detail</string>
 </resources>

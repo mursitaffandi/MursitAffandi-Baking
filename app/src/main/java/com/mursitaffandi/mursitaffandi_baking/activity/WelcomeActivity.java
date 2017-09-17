@@ -1,25 +1,22 @@
-package com.mursitaffandi.mursitaffandi_baking;
+package com.mursitaffandi.mursitaffandi_baking.activity;
 
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
+import com.mursitaffandi.mursitaffandi_baking.ApplicationBase;
+import com.mursitaffandi.mursitaffandi_baking.R;
 import com.mursitaffandi.mursitaffandi_baking.controller.Welcome;
 import com.mursitaffandi.mursitaffandi_baking.event.Progres;
-import com.mursitaffandi.mursitaffandi_baking.model.Baking;
 import com.mursitaffandi.mursitaffandi_baking.model.MultiBaking;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

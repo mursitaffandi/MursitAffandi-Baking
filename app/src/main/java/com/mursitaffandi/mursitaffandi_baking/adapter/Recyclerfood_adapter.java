@@ -37,9 +37,9 @@ public class Recyclerfood_adapter extends RecyclerView.Adapter<Recyclerfood_adap
         Baking baking = mMultiBaking.getBaking().get(holder.getAdapterPosition());
 
         holder.foodName.setText(baking.getName());
-        holder.foodIngredient.setText(baking.getIngredients().size() +" "+ ApplicationBase.getInstance().getString(R.string.ingredient));
-        holder.foodStep.setText(baking.getSteps().size() + " " +ApplicationBase.getInstance().getString(R.string.step));
-        holder.foodServing.setText(String.valueOf(baking.getServings())+ " "+  ApplicationBase.getInstance().getString(R.string.servingfor));
+        holder.foodIngredient.setText(baking.getIngredients().size() + ApplicationBase.getInstance().getString(R.string.ingredient));
+        holder.foodStep.setText(baking.getSteps().size() +ApplicationBase.getInstance().getString(R.string.step));
+        holder.foodServing.setText(String.valueOf(baking.getServings())+  ApplicationBase.getInstance().getString(R.string.servingfor));
     }
 
     @Override
