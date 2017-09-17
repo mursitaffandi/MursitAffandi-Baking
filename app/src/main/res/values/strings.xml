@@ -6,4 +6,6 @@
     <string name="food_ingredient">food ingredient</string>
     <string name="food_step">food_step</string>
     <string name="food_servings">serving for</string>
+    <string name="title_activity_detail_food">DetailFoodActivity</string>
+    <string name="action_settings">Settings</string>
 </resources>
