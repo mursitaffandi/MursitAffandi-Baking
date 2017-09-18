@@ -13,4 +13,7 @@
     <string name="servingfor"> serving</string>
     <string name="title_detailfood_list">Baking</string>
     <string name="title_detailfood_detail">DetailFood Detail</string>
+    <string name="dummy_ingredient">sugar</string>
+    <string name="btn_next_step">Next</string>
+    <string name="btn_prev_step">Previous</string>
 </resources>

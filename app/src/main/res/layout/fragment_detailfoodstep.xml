@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/detailfoodlist">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/linear_stepdetail"
+        android:orientation="vertical">
+
+        <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+            android:id="@+id/exoui_frgdetailstep"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"></com.google.android.exoplayer2.ui.SimpleExoPlayerView>
+
+        <VideoView
+            android:id="@+id/vv_frgdetailstep"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/detail_step_image"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/darker_gray"
+            android:src="@mipmap/ic_video_play" />
+        <TextView
+            android:id="@+id/tv_frgdetailstep_stepinstruction"
+            style="?android:textAppearanceMedium"
+            android:layout_marginTop="@dimen/detailfoodlist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_below="@id/linear_stepdetail"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btn_frgdetailstep_prev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/btn_prev_step"
+            android:textColor="@android:color/white"
+            android:layout_alignParentLeft="true" />
+
+        <Button
+            android:id="@+id/btn_frgdetailstep_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/btn_next_step"
+            android:textColor="@android:color/white"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+</RelativeLayout>

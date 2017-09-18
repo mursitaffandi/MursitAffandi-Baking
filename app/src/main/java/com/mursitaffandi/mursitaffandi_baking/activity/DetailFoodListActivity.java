@@ -7,8 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +16,6 @@ import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
 import com.mursitaffandi.mursitaffandi_baking.R;
-import com.mursitaffandi.mursitaffandi_baking.activity.DetailFoodDetailActivity;
 import com.mursitaffandi.mursitaffandi_baking.dummy.DummyContent;
 import com.mursitaffandi.mursitaffandi_baking.fragment.DetailFoodDetailFragment;
 
@@ -45,20 +42,13 @@ public class DetailFoodListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detailfood_list);
+        setContentView(R.layout.fragment_detailfood_list);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
