@@ -165,6 +165,7 @@ mSimpleExoPlayer.seekTo(mCurrentWindow, mPlaybackPosition);
         }
     }
 
+
     @Override
     public void onStop() {
         super.onStop();
