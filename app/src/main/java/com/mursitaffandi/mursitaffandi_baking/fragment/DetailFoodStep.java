@@ -25,6 +25,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 
+import com.google.android.exoplayer2.util.Util;
 import com.mursitaffandi.mursitaffandi_baking.activity.DetailFoodListActivity;
 import com.mursitaffandi.mursitaffandi_baking.R;
 import com.mursitaffandi.mursitaffandi_baking.model.Step;
@@ -117,10 +118,68 @@ public class DetailFoodStep extends Fragment implements View.OnClickListener {
 
         stepExoplayer.setPlayer(mSimpleExoPlayer);
 
+        mSimpleExoPlayer.setPlayWhenReady(mPlayWhenReady);
+mSimpleExoPlayer.seekTo(mCurrentWindow, mPlaybackPosition);
+
+        if (TextUtils.isEmpty(mStep.getVideoURL()) && TextUtils.isEmpty(mStep.getThumbnailURL())) {
+            stepExoplayer.setVisibility(View.GONE);
+        } else {
+            stepExoplayer.setVisibility(View.VISIBLE);
+            Uri uri = null;
+            if (!TextUtils.isEmpty(mStep.getVideoURL())) {
+                uri = Uri.parse(mStep.getVideoURL());
+            } else if (!TextUtils.isEmpty(mStep.getThumbnailURL()) && mStep.getThumbnailURL().substring(mStep.getThumbnailURL().length() - 4, mStep.getThumbnailURL().length()).equals(".mp4")) {
+                uri = Uri.parse(mStep.getThumbnailURL());
+            }
+            MediaSource mediaSource = createMediaSource(uri);
+            mSimpleExoPlayer.prepare(mediaSource, true, false);
+        }
     }
 
     @Override
     public void onClick(View view) {
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (Util.SDK_INT >= 24) {
+            initPlayer();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if ((Util.SDK_INT <= 23 || mSimpleExoPlayer == null)) {
+            initPlayer();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (Util.SDK_INT <= 23) {
+            releaseExoPlayer();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (Util.SDK_INT >= 24) {
+            releaseExoPlayer();
+        }
+    }
+
+    private void releaseExoPlayer() {
+        if (mSimpleExoPlayer != null) {
+            mPlaybackPosition = mSimpleExoPlayer.getCurrentPosition();
+            mCurrentWindow = mSimpleExoPlayer.getCurrentWindowIndex();
+            mPlayWhenReady = mSimpleExoPlayer.getPlayWhenReady();
+            mSimpleExoPlayer.release();
+            mSimpleExoPlayer = null;
+        }
     }
 }
