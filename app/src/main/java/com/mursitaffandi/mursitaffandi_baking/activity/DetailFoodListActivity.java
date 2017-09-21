@@ -1,33 +1,33 @@
 package com.mursitaffandi.mursitaffandi_baking.activity;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
-import android.support.v7.app.ActionBar;
-import android.view.MenuItem;
-
+import com.mursitaffandi.mursitaffandi_baking.ApplicationBase;
 import com.mursitaffandi.mursitaffandi_baking.R;
-import com.mursitaffandi.mursitaffandi_baking.dummy.DummyContent;
-import com.mursitaffandi.mursitaffandi_baking.fragment.DetailFoodDetailFragment;
+import com.mursitaffandi.mursitaffandi_baking.event.FootStepClick;
+import com.mursitaffandi.mursitaffandi_baking.fragment.DetailFood;
+import com.mursitaffandi.mursitaffandi_baking.fragment.DetailFoodStep;
+import com.mursitaffandi.mursitaffandi_baking.model.Baking;
+import com.mursitaffandi.mursitaffandi_baking.model.MultiIngredient;
+import com.mursitaffandi.mursitaffandi_baking.model.MultiStep;
+import com.mursitaffandi.mursitaffandi_baking.model.Step;
+import com.mursitaffandi.mursitaffandi_baking.utilities.ConstantString;
 
-import java.util.List;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
-import static android.support.v4.app.NavUtils.navigateUpFromSameTask;
+import butterknife.ButterKnife;
 
 /**
  * An activity representing a list of Baking. This activity
  * has different presentations for handset and tablet-size devices. On
  * handsets, the activity presents a list of items, which when touched,
- * lead to a {@link DetailFoodDetailActivity} representing
+ * lead to a {@link DetailFoodStep} representing
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
@@ -37,124 +37,94 @@ public class DetailFoodListActivity extends AppCompatActivity {
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
-    private boolean mTwoPane;
+    private boolean mTwoPane = false;
+    private Baking mBaking;
+    private EventBus mEventBus = ApplicationBase.getInstance().getEventBus();
+    private MultiStep stepList;
+    private MultiIngredient ingredientList;
+    private int mPositionSelected = -1;
+    private FragmentManager mFragmentManager;
+    private Bundle mBundleFood;
+    private Bundle mBundleStep;
+    private boolean mBakingList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_detailfood_list);
+        setContentView(R.layout.detailfood_list);
+        setUpView();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle(getTitle());
+        mBaking = getIntent().getParcelableExtra(ConstantString.TAG_DETAIL_FOOT);
+        stepList = new MultiStep(mBaking.getSteps());
+        ingredientList = new MultiIngredient(mBaking.getIngredients());
 
 
-        // Show the Up button in the action bar.
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        // The detail container view will be present only in the
+        // large-screen layouts (res/values-w900dp).
+        // If this view is present, then the
+        // activity should be in two-pane mode.
+        mTwoPane = findViewById(R.id.frg_listFoodDetail) != null;
+        displayDetailFoot();
+    }
 
-        View recyclerView = findViewById(R.id.detailfood_list);
-        assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
+    private void displayDetailFoot() {
+        setTitle(mBaking.getName());
+        mFragmentManager = getSupportFragmentManager();
+        mFragmentManager.beginTransaction().replace(R.id.frg_foodDetail, new Fragment()).commit();
+        DetailFood fragmentDetailFood = new DetailFood();
+        mBundleFood = new Bundle();
+        mBundleFood.putParcelable(ConstantString.TAG_BUNDLE_INGREDIENT, ingredientList);
+        mBundleFood.putParcelable(ConstantString.TAG_BUNDLE_STEP, stepList);
+        fragmentDetailFood.setArguments(mBundleFood);
 
-        if (findViewById(R.id.detailfood_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
-            mTwoPane = true;
-        }
+        if (mTwoPane)
+            mFragmentManager.beginTransaction().replace(R.id.frg_listFoodDetail, fragmentDetailFood).commit();
+        else
+            mFragmentManager.beginTransaction().replace(R.id.frg_foodDetail, fragmentDetailFood).commit();
+        mBakingList = true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. Use NavUtils to allow users
-            // to navigate up one level in the application structure. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //
-            navigateUpFromSameTask(this);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+    protected void onStart() {
+        super.onStart();
+        mEventBus.register(this);
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(DummyContent.ITEMS));
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mEventBus.unregister(this);
     }
 
-    public class SimpleItemRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
-
-        private final List<DummyContent.DummyItem> mValues;
-
-        public SimpleItemRecyclerViewAdapter(List<DummyContent.DummyItem> items) {
-            mValues = items;
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void displayFootStep(FootStepClick footStepClick){
+        if (mPositionSelected != footStepClick.getClickPosition()) {
+            mPositionSelected = footStepClick.getClickPosition();
+            showDetailStepFragment(footStepClick.getClickPosition());
         }
 
-        @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.detailfood_list_content, parent, false);
-            return new ViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mItem = mValues.get(position);
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).content);
-
-            holder.mView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mTwoPane) {
-                        Bundle arguments = new Bundle();
-                        arguments.putString(DetailFoodDetailFragment.ARG_ITEM_ID, holder.mItem.id);
-                        DetailFoodDetailFragment fragment = new DetailFoodDetailFragment();
-                        fragment.setArguments(arguments);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.detailfood_detail_container, fragment)
-                                .commit();
-                    } else {
-                        Context context = v.getContext();
-                        Intent intent = new Intent(context, DetailFoodDetailActivity.class);
-                        intent.putExtra(DetailFoodDetailFragment.ARG_ITEM_ID, holder.mItem.id);
-
-                        context.startActivity(intent);
-                    }
-                }
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            return mValues.size();
-        }
-
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            public final View mView;
-            public final TextView mIdView;
-            public final TextView mContentView;
-            public DummyContent.DummyItem mItem;
-
-            public ViewHolder(View view) {
-                super(view);
-                mView = view;
-                mIdView = (TextView) view.findViewById(R.id.id);
-                mContentView = (TextView) view.findViewById(R.id.content);
-            }
-
-            @Override
-            public String toString() {
-                return super.toString() + " '" + mContentView.getText() + "'";
-            }
-        }
     }
+
+    private void showDetailStepFragment(int clickPosition) {
+        Step step = mBaking.getSteps().get(clickPosition);
+        setTitle(mBaking.getName() + " - " + step.getShortDescription());
+        mBundleStep = new Bundle();
+        mBundleStep.putParcelable(ConstantString.TAG_BUNDLE_STEP, step);
+        mBundleStep.putBoolean(ConstantString.TAG_STEP_LAST,clickPosition != 0);
+        mBundleStep.putBoolean(ConstantString.TAG_STEP_FIRST,clickPosition == 0);
+        mBundleStep.putInt(ConstantString.TAG_STEP_NUMBER,clickPosition);
+        DetailFoodStep frg_detailFoodStep = new DetailFoodStep();
+        frg_detailFoodStep.setArguments(mBundleStep);
+        mFragmentManager
+                .beginTransaction()
+                .replace(R.id.frg_foodDetail, frg_detailFoodStep)
+                .commit();
+        mBakingList = false;
+    }
+
+
+    private void setUpView() {
+        ButterKnife.bind(this);
+    }
+
 }

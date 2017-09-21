@@ -30,7 +30,7 @@
                 android:value="com.mursitaffandi.mursitaffandi_baking.activity.List_food" />
         </activity>
         <activity
-            android:name=".activity.DetailFoodDetailActivity"
+            android:name=".fragment.DetailFoodStep"
             android:label="@string/title_detailfood_detail"
             android:parentActivityName=".activity.DetailFoodListActivity"
             android:theme="@style/AppTheme.NoActionBar">

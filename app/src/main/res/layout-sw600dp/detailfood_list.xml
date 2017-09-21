@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
     android:baselineAligned="false"
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
@@ -26,7 +26,7 @@
 
     <FrameLayout
         android:id="@+id/frg_foodDetail"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/item_width"
         android:layout_height="match_parent"
         android:layout_weight="3" />
 

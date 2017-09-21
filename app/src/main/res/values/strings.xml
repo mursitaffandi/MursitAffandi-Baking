@@ -8,12 +8,14 @@
     <string name="food_servings">serving for</string>
     <string name="title_activity_detail_food">DetailFoodActivity</string>
     <string name="action_settings">Settings</string>
-    <string name="ingredient"> ingredient</string>
-    <string name="step"> step</string>
-    <string name="servingfor"> serving</string>
+    <string name="ingredient">Ingredient</string>
+    <string name="step">Step</string>
+    <string name="servingfor">Serving</string>
     <string name="title_detailfood_list">Baking</string>
     <string name="title_detailfood_detail">DetailFood Detail</string>
     <string name="dummy_ingredient">sugar</string>
     <string name="btn_next_step">Next</string>
     <string name="btn_prev_step">Previous</string>
+    <string name="image_step">preview step</string>
+    <string name="text_step">this step</string>
 </resources>
