@@ -13,25 +13,25 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <TextView
-            android:id="@+id/adapter_recipes_title"
+            android:id="@+id/tv_item_title"
             style="?android:textAppearanceLarge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/food_title" />
         <TextView
-            android:id="@+id/adapter_recipes_ingredient"
+            android:id="@+id/tv_item_ingredient"
             style="?android:textAppearanceMedium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/food_ingredient" />
         <TextView
-            android:id="@+id/adapter_recipes_step"
+            android:id="@+id/tv_item_step"
             style="?android:textAppearanceMedium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/food_step" />
         <TextView
-            android:id="@+id/adapter_recipes_serving"
+            android:id="@+id/tv_item_serving"
             style="?android:textAppearanceMedium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

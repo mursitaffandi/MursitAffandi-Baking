@@ -46,16 +46,16 @@ public class Recyclerfood_adapter extends RecyclerView.Adapter<Recyclerfood_adap
     }
 
     public class Food extends RecyclerView.ViewHolder{
-        @BindView(R.id.adapter_recipes_title)
+        @BindView(R.id.tv_item_title)
         TextView foodName;
 
-        @BindView(R.id.adapter_recipes_ingredient)
+        @BindView(R.id.tv_item_ingredient)
         TextView foodIngredient;
 
-        @BindView(R.id.adapter_recipes_step)
+        @BindView(R.id.tv_item_step)
         TextView foodStep;
 
-        @BindView(R.id.adapter_recipes_serving)
+        @BindView(R.id.tv_item_serving)
         TextView foodServing;
 
         @BindView(R.id.card_food)
