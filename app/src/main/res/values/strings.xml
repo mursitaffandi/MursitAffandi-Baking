@@ -18,4 +18,8 @@
     <string name="btn_prev_step">Previous</string>
     <string name="image_step">preview step</string>
     <string name="text_step">this step</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="configure">Configure</string>
+    <string name="add_widget">Add widget</string>
+    <string name="widget_title">Ingredients of %s</string>
 </resources>

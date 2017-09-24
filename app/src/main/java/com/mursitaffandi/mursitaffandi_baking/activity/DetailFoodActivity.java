@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.mursitaffandi.mursitaffandi_baking.ApplicationBase;
 import com.mursitaffandi.mursitaffandi_baking.R;
@@ -21,6 +22,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -31,7 +33,7 @@ import butterknife.ButterKnife;
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class DetailFoodListActivity extends AppCompatActivity {
+public class DetailFoodActivity extends AppCompatActivity {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -67,8 +69,23 @@ public class DetailFoodListActivity extends AppCompatActivity {
         displayDetailFoot();
     }
 
+    @Override
+    public void onBackPressed() {
+        if (mTwoPane) {
+            super.onBackPressed();
+            return;
+        }
+        Fragment fragment = mFragmentManager.findFragmentById(R.id.frg_foodDetail);
+        if (fragment instanceof DetailFood) {
+            displayDetailFoot();
+        } else {
+            super.onBackPressed();
+            return;
+        }
+    }
+
     private void displayDetailFoot() {
-        setTitle(mBaking.getName());
+//        setTitle(mBaking.getName());
         mFragmentManager = getSupportFragmentManager();
         mFragmentManager.beginTransaction().replace(R.id.frg_foodDetail, new Fragment()).commit();
         DetailFood fragmentDetailFood = new DetailFood();
@@ -97,7 +114,7 @@ public class DetailFoodListActivity extends AppCompatActivity {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void displayFootStep(FootStepClick footStepClick){
+    public void displayFootStep(FootStepClick footStepClick) {
         if (mPositionSelected != footStepClick.getClickPosition()) {
             mPositionSelected = footStepClick.getClickPosition();
             showDetailStepFragment(footStepClick.getClickPosition());
@@ -107,12 +124,12 @@ public class DetailFoodListActivity extends AppCompatActivity {
 
     private void showDetailStepFragment(int clickPosition) {
         Step step = mBaking.getSteps().get(clickPosition);
-        setTitle(mBaking.getName() + " - " + step.getShortDescription());
+//        setTitle(mBaking.getName() + " - " + step.getShortDescription());
         mBundleStep = new Bundle();
         mBundleStep.putParcelable(ConstantString.TAG_BUNDLE_STEP, step);
-        mBundleStep.putBoolean(ConstantString.TAG_STEP_LAST,clickPosition != 0);
-        mBundleStep.putBoolean(ConstantString.TAG_STEP_FIRST,clickPosition == 0);
-        mBundleStep.putInt(ConstantString.TAG_STEP_NUMBER,clickPosition);
+        mBundleStep.putBoolean(ConstantString.TAG_STEP_LAST, clickPosition == (mBaking.getSteps().size() - 1));
+        mBundleStep.putBoolean(ConstantString.TAG_STEP_FIRST, clickPosition == 0);
+        mBundleStep.putInt(ConstantString.TAG_STEP_NUMBER, clickPosition);
         DetailFoodStep frg_detailFoodStep = new DetailFoodStep();
         frg_detailFoodStep.setArguments(mBundleStep);
         mFragmentManager

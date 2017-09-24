@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import com.mursitaffandi.mursitaffandi_baking.R;
 import com.mursitaffandi.mursitaffandi_baking.adapter.Recyclerfood_adapter;
@@ -39,7 +38,7 @@ public class List_food extends AppCompatActivity implements RecyclerClick_food{
 
     @Override
     public void onFoodSelected(Baking food) {
-        Intent gotoDetail = new Intent(this, DetailFoodListActivity.class);
+        Intent gotoDetail = new Intent(this, DetailFoodActivity.class);
         gotoDetail.putExtra(ConstantString.TAG_DETAIL_FOOT, food);
         startActivity(gotoDetail);
     }

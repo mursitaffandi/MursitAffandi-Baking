@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,10 +25,14 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 
 import com.google.android.exoplayer2.util.Util;
-import com.mursitaffandi.mursitaffandi_baking.activity.DetailFoodListActivity;
+import com.mursitaffandi.mursitaffandi_baking.ApplicationBase;
+import com.mursitaffandi.mursitaffandi_baking.activity.DetailFoodActivity;
 import com.mursitaffandi.mursitaffandi_baking.R;
+import com.mursitaffandi.mursitaffandi_baking.event.FootStepClick;
 import com.mursitaffandi.mursitaffandi_baking.model.Step;
 import com.mursitaffandi.mursitaffandi_baking.utilities.ConstantString;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,9 +41,9 @@ import butterknife.ButterKnife;
  * An activity representing a single DetailFood detail screen. This
  * activity is only used narrow width devices. On tablet-size devices,
  * item details are presented side-by-side with a list of items
- * in a {@link DetailFoodListActivity}.
+ * in a {@link DetailFoodActivity}.
  */
-public class DetailFoodStep extends Fragment implements View.OnClickListener {
+public class DetailFoodStep extends Fragment{
     @BindView(R.id.exoui_frgdetailstep)
     SimpleExoPlayerView stepExoplayer;
 
@@ -76,15 +79,25 @@ public class DetailFoodStep extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detailfoodstep, container, false);
         ButterKnife.bind(this, view);
-        btnNext.setOnClickListener(this);
-        btnPrev.setOnClickListener(this);
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gotoNextStep();
+            }
+        });
+        btnPrev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gotoPrevStep();
+            }
+        });
         ivDetailStep.setVisibility(View.GONE);
         mBundle = getArguments();
         mStep = mBundle.getParcelable(ConstantString.TAG_BUNDLE_STEP);
         mNumber = mBundle.getInt(ConstantString.TAG_STEP_NUMBER);
         mFirst = mBundle.getBoolean(ConstantString.TAG_STEP_FIRST);
         mLast = mBundle.getBoolean(ConstantString.TAG_STEP_LAST);
-
+        tvDetailStep.setText(mStep.getDescription());
         ivDetailStep.setVisibility(View.GONE);
         if (!TextUtils.isEmpty(mStep.getThumbnailURL()) && !mStep.getThumbnailURL().substring(mStep.getThumbnailURL().length() - 4, mStep.getThumbnailURL().length()).equals(".mp4")) {
             ivDetailStep.setVisibility(View.VISIBLE);
@@ -101,6 +114,18 @@ public class DetailFoodStep extends Fragment implements View.OnClickListener {
         if (mLast) btnNext.setVisibility(View.GONE);
 
         return view;
+    }
+    EventBus eventBus = ApplicationBase.getInstance().getEventBus();
+    FootStepClick event = new FootStepClick();
+
+    private void gotoPrevStep() {
+        event.setClickPosition(mNumber - 1);
+        eventBus.post(event);
+    }
+
+    private void gotoNextStep() {
+        event.setClickPosition(mNumber + 1);
+        eventBus.post(event);
     }
 
     private MediaSource createMediaSource(Uri uri) {
@@ -119,7 +144,7 @@ public class DetailFoodStep extends Fragment implements View.OnClickListener {
         stepExoplayer.setPlayer(mSimpleExoPlayer);
 
         mSimpleExoPlayer.setPlayWhenReady(mPlayWhenReady);
-mSimpleExoPlayer.seekTo(mCurrentWindow, mPlaybackPosition);
+        mSimpleExoPlayer.seekTo(mCurrentWindow, mPlaybackPosition);
 
         if (TextUtils.isEmpty(mStep.getVideoURL()) && TextUtils.isEmpty(mStep.getThumbnailURL())) {
             stepExoplayer.setVisibility(View.GONE);
@@ -134,11 +159,6 @@ mSimpleExoPlayer.seekTo(mCurrentWindow, mPlaybackPosition);
             MediaSource mediaSource = createMediaSource(uri);
             mSimpleExoPlayer.prepare(mediaSource, true, false);
         }
-    }
-
-    @Override
-    public void onClick(View view) {
-
     }
 
     @Override

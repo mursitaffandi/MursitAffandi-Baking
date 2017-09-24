@@ -8,8 +8,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mursitaffandi.mursitaffandi_baking.ApplicationBase;
 import com.mursitaffandi.mursitaffandi_baking.R;
 import com.mursitaffandi.mursitaffandi_baking.event.RecyleClick_step;
 import com.mursitaffandi.mursitaffandi_baking.model.MultiStep;
@@ -25,9 +27,11 @@ public class StepList_adapter extends RecyclerView.Adapter<StepList_adapter.View
     RecyleClick_step mFootStepClick;
     MultiStep mMultiStep;
     private int mSelectedStep;
+    private int reviousSelectedStep;
     public StepList_adapter(RecyleClick_step mFootStepClick, MultiStep mMultiStep) {
         this.mFootStepClick = mFootStepClick;
         this.mMultiStep = mMultiStep;
+        this.reviousSelectedStep = -1;
         this.mSelectedStep = -1;
     }
 
@@ -44,6 +48,8 @@ public class StepList_adapter extends RecyclerView.Adapter<StepList_adapter.View
         final Context context = holder.itemView.getContext();
         if (mSelectedStep == position) {
             holder.itemView.setBackgroundColor(ContextCompat.getColor(context, android.R.color.black));
+            holder.tv_step.setTextColor(ApplicationBase.getInstance().getResources().getColor(R.color.cardview_light_background));
+            holder.iv_step.setImageResource(R.mipmap.ic_item_step_selected);
         } else {
             holder.itemView.setBackgroundColor(ContextCompat.getColor(context, android.R.color.white));
         }
@@ -57,7 +63,8 @@ public class StepList_adapter extends RecyclerView.Adapter<StepList_adapter.View
     public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_itemStep)
         TextView tv_step;
-
+        @BindView(R.id.iv_itemStep)
+        ImageView iv_step;
         @BindView(R.id.cv_itemstep)
         CardView cv_step;
 
@@ -67,8 +74,10 @@ public class StepList_adapter extends RecyclerView.Adapter<StepList_adapter.View
             cv_step.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
                     mSelectedStep = getAdapterPosition();
                     mFootStepClick.onStepClick(mSelectedStep);
+
                     notifyDataSetChanged();
                 }
             });

@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mursitaffandi.mursitaffandi_baking.ApplicationBase;
-import com.mursitaffandi.mursitaffandi_baking.activity.DetailFoodListActivity;
+import com.mursitaffandi.mursitaffandi_baking.activity.DetailFoodActivity;
 import com.mursitaffandi.mursitaffandi_baking.R;
 import com.mursitaffandi.mursitaffandi_baking.adapter.StepList_adapter;
 import com.mursitaffandi.mursitaffandi_baking.event.FootStepClick;
@@ -28,7 +28,7 @@ import butterknife.ButterKnife;
 
 /**
  * A fragment representing a single DetailFood detail screen.
- * This fragment is either contained in a {@link DetailFoodListActivity}
+ * This fragment is either contained in a {@link DetailFoodActivity}
  * in two-pane mode (on tablets) or a {@link DetailFoodStep}
  * on handsets.
  */
@@ -69,6 +69,7 @@ public class DetailFood extends Fragment implements RecyleClick_step{
         rc_detailFoot.setLayoutManager(stepLayoutManager);
 
         StepList_adapter stepsAdapter = new StepList_adapter(this, mMultiStep);
+
         rc_detailFoot.setAdapter(stepsAdapter);
         stepsAdapter.notifyDataSetChanged();
 
@@ -80,6 +81,7 @@ public class DetailFood extends Fragment implements RecyleClick_step{
     public void onStepClick(int stepPosition) {
         FootStepClick event = new FootStepClick();
         event.setClickPosition(stepPosition);
+
         eventBus.post(event);
     }
 }

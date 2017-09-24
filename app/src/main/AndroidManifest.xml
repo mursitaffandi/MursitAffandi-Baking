@@ -21,7 +21,7 @@
         </activity>
         <activity android:name=".activity.List_food" />
         <activity
-            android:name=".activity.DetailFoodListActivity"
+            android:name=".activity.DetailFoodActivity"
             android:label="@string/title_detailfood_list"
             android:parentActivityName=".activity.List_food"
             android:theme="@style/AppTheme.NoActionBar">
@@ -29,14 +29,21 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mursitaffandi.mursitaffandi_baking.activity.List_food" />
         </activity>
-        <activity
-            android:name=".fragment.DetailFoodStep"
-            android:label="@string/title_detailfood_detail"
-            android:parentActivityName=".activity.DetailFoodListActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+
+        <receiver android:name=".NewAppWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
             <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mursitaffandi.mursitaffandi_baking.activity.DetailFoodListActivity" />
+                android:name="android.appwidget.provider"
+                android:resource="@xml/new_app_widget_info" />
+        </receiver>
+
+        <activity android:name=".activity.NewAppWidgetConfigureActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
         </activity>
     </application>
 

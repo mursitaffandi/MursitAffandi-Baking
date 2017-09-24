@@ -9,7 +9,7 @@
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
     android:showDividers="middle"
-    tools:context="com.mursitaffandi.mursitaffandi_baking.activity.DetailFoodListActivity">
+    tools:context="com.mursitaffandi.mursitaffandi_baking.activity.DetailFoodActivity">
 
     <!--
     This layout is a two-pane layout for the Baking
