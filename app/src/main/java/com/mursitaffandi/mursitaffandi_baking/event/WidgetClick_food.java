@@ -1,6 +1,5 @@
 package com.mursitaffandi.mursitaffandi_baking.event;
 
-import com.mursitaffandi.mursitaffandi_baking.model.Ingredient;
 import com.mursitaffandi.mursitaffandi_baking.model.MultiIngredient;
 
 /**

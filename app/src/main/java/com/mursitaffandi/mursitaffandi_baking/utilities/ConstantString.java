@@ -12,4 +12,7 @@ public class ConstantString {
     public static final String TAG_STEP_NUMBER = "step_number";
     public static final String TAG_STEP_FIRST = "step_first";
     public static final String TAG_STEP_LAST = "step_last";
+    public static final String TAG_WIDGET_STATE = "widget_state";
+    public static final String TAG_DETAILFOOD_LIST_STATE = "detail_list";
+    public static final String TAG_DETAILFOOD_POSITION_STATE = "detail_position";
 }

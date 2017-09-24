@@ -31,7 +31,7 @@ public class WelcomeActivity extends AppCompatActivity {
     @BindView(R.id.btn_rerequest)
     Button btn_retry;
 
-    Welcome controllerWelcome;
+    private Welcome controllerWelcome;
     EventBus eventBus = ApplicationBase.getInstance().getEventBus();
     @Override
     protected void onCreate(Bundle savedInstanceState) {

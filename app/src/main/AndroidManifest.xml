@@ -22,12 +22,10 @@
         <activity android:name=".activity.List_food" />
         <activity
             android:name=".activity.DetailFoodActivity"
-            android:label="@string/title_detailfood_list"
-            android:parentActivityName=".activity.List_food"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mursitaffandi.mursitaffandi_baking.activity.List_food" />
+            android:parentActivityName=".activity.List_food">
+            <!--            <meta-data
+                            android:name="android.support.PARENT_ACTIVITY"
+                            android:value="com.mursitaffandi.mursitaffandi_baking.activity.List_food" />-->
         </activity>
 
         <receiver android:name=".NewAppWidget">

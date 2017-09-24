@@ -1,7 +1,5 @@
 package com.mursitaffandi.mursitaffandi_baking.controller;
 
-import android.util.Log;
-
 import com.mursitaffandi.mursitaffandi_baking.ApplicationBase;
 import com.mursitaffandi.mursitaffandi_baking.event.Progres;
 import com.mursitaffandi.mursitaffandi_baking.model.Baking;
@@ -17,8 +15,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Welcome {
-    Progres event = new Progres();
-    EventBus eventBus = ApplicationBase.getInstance().getEventBus();
+    private Progres event = new Progres();
+    private EventBus eventBus = ApplicationBase.getInstance().getEventBus();
 
     public void getBaking() {
         BakingService apiService =

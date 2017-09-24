@@ -1,15 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
-    android:baselineAligned="false"
-    android:divider="?android:attr/dividerHorizontal"
-    android:orientation="horizontal"
-    android:showDividers="middle"
-    tools:context="com.mursitaffandi.mursitaffandi_baking.activity.DetailFoodActivity">
+    android:orientation="horizontal">
 
     <!--
     This layout is a two-pane layout for the Baking
@@ -17,8 +10,7 @@
     
     -->
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <FrameLayout
         android:id="@+id/frg_listFoodDetail"
         android:layout_width="@dimen/item_width"
         android:layout_height="match_parent"

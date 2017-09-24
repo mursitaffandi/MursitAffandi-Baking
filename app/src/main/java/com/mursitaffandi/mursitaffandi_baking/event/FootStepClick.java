@@ -5,7 +5,7 @@ package com.mursitaffandi.mursitaffandi_baking.event;
  */
 
 public class FootStepClick {
-    int clickPosition;
+    private int clickPosition;
 
     public int getClickPosition() {
         return clickPosition;

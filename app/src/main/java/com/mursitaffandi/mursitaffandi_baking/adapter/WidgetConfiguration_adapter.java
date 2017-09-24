@@ -19,8 +19,8 @@ import butterknife.ButterKnife;
  */
 
 public class WidgetConfiguration_adapter extends RecyclerView.Adapter<WidgetConfiguration_adapter.ItemWidget_viewholder>{
-    MultiBaking mMultiBaking;
-    WidgetClick_food mWidgetClickFood;
+    private MultiBaking mMultiBaking;
+    private WidgetClick_food mWidgetClickFood;
 
     public WidgetConfiguration_adapter(MultiBaking mMultiBaking, WidgetClick_food mWidgetClickFood) {
         this.mMultiBaking = mMultiBaking;

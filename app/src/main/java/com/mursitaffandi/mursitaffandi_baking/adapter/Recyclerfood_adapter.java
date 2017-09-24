@@ -1,9 +1,7 @@
 package com.mursitaffandi.mursitaffandi_baking.adapter;
 
-import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +17,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class Recyclerfood_adapter extends RecyclerView.Adapter<Recyclerfood_adapter.Food> {
-    MultiBaking mMultiBaking;
-    RecyclerClick_food mRecyclerClickFood;
+    private MultiBaking mMultiBaking;
+    private RecyclerClick_food mRecyclerClickFood;
     public Recyclerfood_adapter(MultiBaking mMultiBaking, RecyclerClick_food mRecyclerClickFood) {
         this.mMultiBaking = mMultiBaking;
         this.mRecyclerClickFood = mRecyclerClickFood;

@@ -115,8 +115,8 @@ public class DetailFoodStep extends Fragment{
 
         return view;
     }
-    EventBus eventBus = ApplicationBase.getInstance().getEventBus();
-    FootStepClick event = new FootStepClick();
+    private final EventBus eventBus = ApplicationBase.getInstance().getEventBus();
+    private final FootStepClick event = new FootStepClick();
 
     private void gotoPrevStep() {
         event.setClickPosition(mNumber - 1);

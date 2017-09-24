@@ -31,7 +31,11 @@ public class List_food extends AppCompatActivity implements RecyclerClick_food{
         ButterKnife.bind(this);
         RecyclerView.LayoutManager recipeLayoutManager = new GridLayoutManager(this, 3, LinearLayoutManager.VERTICAL, false);
         mRc_food.setLayoutManager(recipeLayoutManager);
-        list_baking = getIntent().getParcelableExtra("list_baking");
+        if(savedInstanceState != null){
+            list_baking = savedInstanceState.getParcelable("baking");
+        }else {
+            list_baking = getIntent().getParcelableExtra("list_baking");
+        }
         mFoodAdapter = new Recyclerfood_adapter(list_baking,this);
         mRc_food.setAdapter(mFoodAdapter);
     }
@@ -43,4 +47,9 @@ public class List_food extends AppCompatActivity implements RecyclerClick_food{
         startActivity(gotoDetail);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("baking", list_baking);
+    }
 }

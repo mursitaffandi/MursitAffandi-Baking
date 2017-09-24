@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +23,8 @@ import butterknife.ButterKnife;
  */
 
 public class StepList_adapter extends RecyclerView.Adapter<StepList_adapter.ViewHolder> {
-    RecyleClick_step mFootStepClick;
-    MultiStep mMultiStep;
+    private RecyleClick_step mFootStepClick;
+    private MultiStep mMultiStep;
     private int mSelectedStep;
     private int reviousSelectedStep;
     public StepList_adapter(RecyleClick_step mFootStepClick, MultiStep mMultiStep) {

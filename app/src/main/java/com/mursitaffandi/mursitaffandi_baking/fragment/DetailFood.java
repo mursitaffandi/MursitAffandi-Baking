@@ -41,7 +41,8 @@ public class DetailFood extends Fragment implements RecyleClick_step{
     private MultiStep mMultiStep;
     private MultiIngredient mMultiIngredient;
     private String fullIngredient;
-    EventBus eventBus = ApplicationBase.getInstance().getEventBus();
+    private final EventBus eventBus = ApplicationBase.getInstance().getEventBus();
+    StepList_adapter stepsAdapter;
     public DetailFood() {
     }
 
@@ -68,7 +69,7 @@ public class DetailFood extends Fragment implements RecyleClick_step{
         LinearLayoutManager stepLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rc_detailFoot.setLayoutManager(stepLayoutManager);
 
-        StepList_adapter stepsAdapter = new StepList_adapter(this, mMultiStep);
+        stepsAdapter = new StepList_adapter(this, mMultiStep);
 
         rc_detailFoot.setAdapter(stepsAdapter);
         stepsAdapter.notifyDataSetChanged();
@@ -76,12 +77,10 @@ public class DetailFood extends Fragment implements RecyleClick_step{
         ViewCompat.setNestedScrollingEnabled(rc_detailFoot, false);
         return rootView;
     }
-
     @Override
     public void onStepClick(int stepPosition) {
         FootStepClick event = new FootStepClick();
         event.setClickPosition(stepPosition);
-
         eventBus.post(event);
     }
 }

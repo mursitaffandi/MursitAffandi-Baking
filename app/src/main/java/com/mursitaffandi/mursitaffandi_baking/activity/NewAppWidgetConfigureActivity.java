@@ -1,18 +1,14 @@
 package com.mursitaffandi.mursitaffandi_baking.activity;
 
 import android.app.Activity;
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.RemoteViews;
 
@@ -26,13 +22,11 @@ import com.mursitaffandi.mursitaffandi_baking.event.WidgetClick_food;
 import com.mursitaffandi.mursitaffandi_baking.model.Ingredient;
 import com.mursitaffandi.mursitaffandi_baking.model.MultiBaking;
 import com.mursitaffandi.mursitaffandi_baking.model.MultiIngredient;
+import com.mursitaffandi.mursitaffandi_baking.utilities.ConstantString;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.text.DecimalFormat;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,9 +34,9 @@ import butterknife.ButterKnife;
 /**
  * The configuration screen for the {@link NewAppWidget NewAppWidget} AppWidget.
  */
-public class NewAppWidgetConfigureActivity extends Activity implements WidgetClick_food{
-private WidgetConfiguration_adapter widgetConfiguration_adapter;
-    int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+public class NewAppWidgetConfigureActivity extends Activity implements WidgetClick_food {
+    private WidgetConfiguration_adapter widgetConfiguration_adapter;
+    private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     private Welcome mControllerWelcome;
     @BindView(R.id.rv_list_config_widget)
     RecyclerView mRecyclerView;
@@ -55,12 +49,13 @@ private WidgetConfiguration_adapter widgetConfiguration_adapter;
     @BindView(R.id.rl_progress_widgetfood)
     RelativeLayout progress_layout;
     MultiBaking mBaking;
-    EventBus eventBus;
+    private EventBus eventBus;
 
     public NewAppWidgetConfigureActivity() {
         super();
 
     }
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -72,9 +67,17 @@ private WidgetConfiguration_adapter widgetConfiguration_adapter;
         setContentView(R.layout.new_app_widget_configure);
         eventBus = ApplicationBase.getInstance().getEventBus();
         ButterKnife.bind(this);
+        if (icicle != null && icicle.containsKey(ConstantString.TAG_WIDGET_STATE)) {
+            progress_layout.setVisibility(View.INVISIBLE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+            mBaking = icicle.getParcelable(ConstantString.TAG_WIDGET_STATE);
+            widgetConfiguration_adapter = new WidgetConfiguration_adapter(mBaking, this);
+            mRecyclerView.setAdapter(widgetConfiguration_adapter);
+        } else {
+            mControllerWelcome = new Welcome();
+            getData();
+        }
 
-        mControllerWelcome = new Welcome();
-        getData();
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
@@ -104,7 +107,7 @@ private WidgetConfiguration_adapter widgetConfiguration_adapter;
     }
 
     private void getData() {
-        if (View.VISIBLE == error_layout.getVisibility()){
+        if (View.VISIBLE == error_layout.getVisibility()) {
             error_layout.setVisibility(View.INVISIBLE);
         }
         progress_layout.setVisibility(View.VISIBLE);
@@ -124,7 +127,6 @@ private WidgetConfiguration_adapter widgetConfiguration_adapter;
         NewAppWidget.updateAppWidget(context, appWidgetManager, mAppWidgetId);
 
         // Make sure we pass back the original appWidgetId
-
 
 
         RemoteViews views = new RemoteViews(getBaseContext().getPackageName(), R.layout.new_app_widget);
@@ -167,14 +169,18 @@ private WidgetConfiguration_adapter widgetConfiguration_adapter;
         if (event.isSuccess()) {
             mRecyclerView.setVisibility(View.VISIBLE);
             mBaking = event.getBakings();
-            widgetConfiguration_adapter = new WidgetConfiguration_adapter(mBaking,this);
+            widgetConfiguration_adapter = new WidgetConfiguration_adapter(mBaking, this);
             mRecyclerView.setAdapter(widgetConfiguration_adapter);
-
         } else {
             progress_layout.setVisibility(View.GONE);
             error_layout.setVisibility(View.VISIBLE);
         }
+    }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (mBaking != null)
+            outState.putParcelable(ConstantString.TAG_WIDGET_STATE, mBaking);
     }
 }
-

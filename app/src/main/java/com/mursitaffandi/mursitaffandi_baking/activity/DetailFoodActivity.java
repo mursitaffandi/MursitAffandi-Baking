@@ -3,9 +3,8 @@ package com.mursitaffandi.mursitaffandi_baking.activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.MenuItem;
 
 import com.mursitaffandi.mursitaffandi_baking.ApplicationBase;
 import com.mursitaffandi.mursitaffandi_baking.R;
@@ -22,7 +21,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -41,20 +39,20 @@ public class DetailFoodActivity extends AppCompatActivity {
      */
     private boolean mTwoPane = false;
     private Baking mBaking;
-    private EventBus mEventBus = ApplicationBase.getInstance().getEventBus();
+    private final EventBus mEventBus = ApplicationBase.getInstance().getEventBus();
     private MultiStep stepList;
     private MultiIngredient ingredientList;
     private int mPositionSelected = -1;
     private FragmentManager mFragmentManager;
     private Bundle mBundleFood;
     private Bundle mBundleStep;
-    private boolean mBakingList;
+    private boolean mBakingList = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detailfood_list);
-        setUpView();
+       ButterKnife.bind(this);
 
         mBaking = getIntent().getParcelableExtra(ConstantString.TAG_DETAIL_FOOT);
         stepList = new MultiStep(mBaking.getSteps());
@@ -67,6 +65,25 @@ public class DetailFoodActivity extends AppCompatActivity {
         // activity should be in two-pane mode.
         mTwoPane = findViewById(R.id.frg_listFoodDetail) != null;
         displayDetailFoot();
+        if (savedInstanceState != null) {
+            mBakingList = savedInstanceState.getBoolean(ConstantString.TAG_DETAILFOOD_LIST_STATE);
+            mPositionSelected = savedInstanceState.getInt(ConstantString.TAG_DETAILFOOD_POSITION_STATE);
+            if (mBakingList) {
+                displayDetailFoot();
+            } else {
+                showDetailStepFragment(mPositionSelected);
+            }
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            onBackPressed();
+            return true;
+        }
+        else
+            return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -76,16 +93,15 @@ public class DetailFoodActivity extends AppCompatActivity {
             return;
         }
         Fragment fragment = mFragmentManager.findFragmentById(R.id.frg_foodDetail);
-        if (fragment instanceof DetailFood) {
+        if (fragment instanceof DetailFoodStep) {
             displayDetailFoot();
         } else {
             super.onBackPressed();
-            return;
         }
     }
 
     private void displayDetailFoot() {
-//        setTitle(mBaking.getName());
+        setTitle(mBaking.getName());
         mFragmentManager = getSupportFragmentManager();
         mFragmentManager.beginTransaction().replace(R.id.frg_foodDetail, new Fragment()).commit();
         DetailFood fragmentDetailFood = new DetailFood();
@@ -124,7 +140,7 @@ public class DetailFoodActivity extends AppCompatActivity {
 
     private void showDetailStepFragment(int clickPosition) {
         Step step = mBaking.getSteps().get(clickPosition);
-//        setTitle(mBaking.getName() + " - " + step.getShortDescription());
+        setTitle(mBaking.getName() + " - " + step.getShortDescription());
         mBundleStep = new Bundle();
         mBundleStep.putParcelable(ConstantString.TAG_BUNDLE_STEP, step);
         mBundleStep.putBoolean(ConstantString.TAG_STEP_LAST, clickPosition == (mBaking.getSteps().size() - 1));
@@ -139,9 +155,10 @@ public class DetailFoodActivity extends AppCompatActivity {
         mBakingList = false;
     }
 
-
-    private void setUpView() {
-        ButterKnife.bind(this);
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(ConstantString.TAG_DETAILFOOD_LIST_STATE, mBakingList);
+        outState.putInt(ConstantString.TAG_DETAILFOOD_POSITION_STATE, mPositionSelected);
     }
-
 }
