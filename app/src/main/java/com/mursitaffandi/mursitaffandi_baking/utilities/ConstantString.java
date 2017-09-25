@@ -15,4 +15,7 @@ public class ConstantString {
     public static final String TAG_WIDGET_STATE = "widget_state";
     public static final String TAG_DETAILFOOD_LIST_STATE = "detail_list";
     public static final String TAG_DETAILFOOD_POSITION_STATE = "detail_position";
+    public static final String TAG_PLAYWHENREADY= "ready";
+    public static final String TAG_EXOPOSITION = "position";
+    public static final String TAG_CURRENTWINDOW = "window";
 }

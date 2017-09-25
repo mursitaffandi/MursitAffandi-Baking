@@ -1,12 +1,17 @@
 package com.mursitaffandi.mursitaffandi_baking.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mursitaffandi.mursitaffandi_baking.ApplicationBase;
 import com.mursitaffandi.mursitaffandi_baking.R;
 import com.mursitaffandi.mursitaffandi_baking.event.RecyclerClick_food;
@@ -19,6 +24,7 @@ import butterknife.ButterKnife;
 public class Recyclerfood_adapter extends RecyclerView.Adapter<Recyclerfood_adapter.Food> {
     private MultiBaking mMultiBaking;
     private RecyclerClick_food mRecyclerClickFood;
+
     public Recyclerfood_adapter(MultiBaking mMultiBaking, RecyclerClick_food mRecyclerClickFood) {
         this.mMultiBaking = mMultiBaking;
         this.mRecyclerClickFood = mRecyclerClickFood;
@@ -38,6 +44,15 @@ public class Recyclerfood_adapter extends RecyclerView.Adapter<Recyclerfood_adap
         holder.foodIngredient.setText(baking.getIngredients().size() + ApplicationBase.getInstance().getString(R.string.ingredient));
         holder.foodStep.setText(baking.getSteps().size() +ApplicationBase.getInstance().getString(R.string.step));
         holder.foodServing.setText(String.valueOf(baking.getServings())+  ApplicationBase.getInstance().getString(R.string.servingfor));
+        if (!TextUtils.isEmpty(baking.getImage()) || !baking.getImage().equals(""))
+        Glide.with(holder.itemView.getContext())
+                .load(baking.getImage())
+                .dontAnimate()
+                .placeholder(R.mipmap.ic_item_food)
+                .error(R.mipmap.ic_error)
+                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                .fitCenter()
+                .into(holder.iv_item);
     }
 
     @Override
@@ -46,6 +61,9 @@ public class Recyclerfood_adapter extends RecyclerView.Adapter<Recyclerfood_adap
     }
 
     public class Food extends RecyclerView.ViewHolder{
+        @BindView(R.id.iv_item_food)
+        ImageView iv_item;
+
         @BindView(R.id.tv_item_title)
         TextView foodName;
 

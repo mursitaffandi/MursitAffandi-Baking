@@ -43,7 +43,7 @@ import butterknife.ButterKnife;
  * item details are presented side-by-side with a list of items
  * in a {@link DetailFoodActivity}.
  */
-public class DetailFoodStep extends Fragment{
+public class DetailFoodStep extends Fragment {
     @BindView(R.id.exoui_frgdetailstep)
     SimpleExoPlayerView stepExoplayer;
 
@@ -61,15 +61,16 @@ public class DetailFoodStep extends Fragment{
     Button btnNext;
 
     private Step mStep;
-    private long mPlaybackPosition;
-    private int mCurrentWindow;
-    private boolean mPlayWhenReady;
     private int mNumber;
     private boolean mFirst;
     private boolean mLast;
 
     private SimpleExoPlayer mSimpleExoPlayer;
     private Bundle mBundle;
+
+    private boolean mPlayWhenReady = true;
+    private int mCurrentWindow;
+    private long mPlayBackPosition;
 
     public DetailFoodStep() {
     }
@@ -112,9 +113,14 @@ public class DetailFoodStep extends Fragment{
 
         if (mFirst) btnPrev.setVisibility(View.GONE);
         if (mLast) btnNext.setVisibility(View.GONE);
-
+        if (savedInstanceState != null) {
+            mPlayBackPosition = savedInstanceState.getLong(ConstantString.TAG_EXOPOSITION);
+            mCurrentWindow = savedInstanceState.getInt(ConstantString.TAG_CURRENTWINDOW);
+            mPlayWhenReady = savedInstanceState.getBoolean(ConstantString.TAG_PLAYWHENREADY);
+        }
         return view;
     }
+
     private final EventBus eventBus = ApplicationBase.getInstance().getEventBus();
     private final FootStepClick event = new FootStepClick();
 
@@ -144,8 +150,7 @@ public class DetailFoodStep extends Fragment{
         stepExoplayer.setPlayer(mSimpleExoPlayer);
 
         mSimpleExoPlayer.setPlayWhenReady(mPlayWhenReady);
-        mSimpleExoPlayer.seekTo(mCurrentWindow, mPlaybackPosition);
-
+        mSimpleExoPlayer.seekTo(mCurrentWindow, mPlayBackPosition);
         if (TextUtils.isEmpty(mStep.getVideoURL()) && TextUtils.isEmpty(mStep.getThumbnailURL())) {
             stepExoplayer.setVisibility(View.GONE);
         } else {
@@ -196,11 +201,19 @@ public class DetailFoodStep extends Fragment{
 
     private void releaseExoPlayer() {
         if (mSimpleExoPlayer != null) {
-            mPlaybackPosition = mSimpleExoPlayer.getCurrentPosition();
-            mCurrentWindow = mSimpleExoPlayer.getCurrentWindowIndex();
             mPlayWhenReady = mSimpleExoPlayer.getPlayWhenReady();
+            mCurrentWindow = mSimpleExoPlayer.getCurrentWindowIndex();
+            mPlayBackPosition = mSimpleExoPlayer.getCurrentPosition();
             mSimpleExoPlayer.release();
             mSimpleExoPlayer = null;
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(ConstantString.TAG_PLAYWHENREADY, mPlayWhenReady);
+        outState.putInt(ConstantString.TAG_CURRENTWINDOW, mCurrentWindow);
+        outState.putLong(ConstantString.TAG_EXOPOSITION, mPlayBackPosition);
     }
 }
