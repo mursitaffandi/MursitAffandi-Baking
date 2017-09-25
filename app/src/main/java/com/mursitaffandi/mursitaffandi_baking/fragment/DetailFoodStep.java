@@ -190,7 +190,6 @@ public class DetailFoodStep extends Fragment {
         }
     }
 
-
     @Override
     public void onStop() {
         super.onStop();
