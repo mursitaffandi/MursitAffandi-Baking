@@ -23,20 +23,8 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.ButterKnife;
 
-/**
- * An activity representing a list of Baking. This activity
- * has different presentations for handset and tablet-size devices. On
- * handsets, the activity presents a list of items, which when touched,
- * lead to a {@link DetailFoodStep} representing
- * item details. On tablets, the activity presents the list of items and
- * item details side-by-side using two vertical panes.
- */
 public class DetailFoodActivity extends AppCompatActivity {
 
-    /**
-     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-     * device.
-     */
     private boolean mTwoPane = false;
     private Baking mBaking;
     private final EventBus mEventBus = ApplicationBase.getInstance().getEventBus();
@@ -131,6 +119,7 @@ public class DetailFoodActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void displayFootStep(FootStepClick footStepClick) {
+
         if (mPositionSelected != footStepClick.getClickPosition()) {
             mPositionSelected = footStepClick.getClickPosition();
             showDetailStepFragment(footStepClick.getClickPosition());

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,7 +71,7 @@ public class DetailFoodStep extends Fragment {
 
     private boolean mPlayWhenReady = true;
     private int mCurrentWindow;
-    private long mPlayBackPosition;
+    public long mPlayBackPosition;
 
     public DetailFoodStep() {
     }
@@ -113,12 +114,19 @@ public class DetailFoodStep extends Fragment {
 
         if (mFirst) btnPrev.setVisibility(View.GONE);
         if (mLast) btnNext.setVisibility(View.GONE);
+
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mPlayBackPosition  = 99;
         if (savedInstanceState != null) {
             mPlayBackPosition = savedInstanceState.getLong(ConstantString.TAG_EXOPOSITION);
             mCurrentWindow = savedInstanceState.getInt(ConstantString.TAG_CURRENTWINDOW);
             mPlayWhenReady = savedInstanceState.getBoolean(ConstantString.TAG_PLAYWHENREADY);
         }
-        return view;
     }
 
     private final EventBus eventBus = ApplicationBase.getInstance().getEventBus();
@@ -141,6 +149,7 @@ public class DetailFoodStep extends Fragment {
     }
 
     private void initPlayer() {
+        Log.d("init", String.valueOf(mPlayBackPosition));
         mSimpleExoPlayer = ExoPlayerFactory.newSimpleInstance(
                 new DefaultRenderersFactory(getContext()),
                 new DefaultTrackSelector(),
@@ -149,8 +158,9 @@ public class DetailFoodStep extends Fragment {
 
         stepExoplayer.setPlayer(mSimpleExoPlayer);
 
-        mSimpleExoPlayer.setPlayWhenReady(mPlayWhenReady);
         mSimpleExoPlayer.seekTo(mCurrentWindow, mPlayBackPosition);
+        mSimpleExoPlayer.setPlayWhenReady(mPlayWhenReady);
+
         if (TextUtils.isEmpty(mStep.getVideoURL()) && TextUtils.isEmpty(mStep.getThumbnailURL())) {
             stepExoplayer.setVisibility(View.GONE);
         } else {
@@ -200,9 +210,6 @@ public class DetailFoodStep extends Fragment {
 
     private void releaseExoPlayer() {
         if (mSimpleExoPlayer != null) {
-            mPlayWhenReady = mSimpleExoPlayer.getPlayWhenReady();
-            mCurrentWindow = mSimpleExoPlayer.getCurrentWindowIndex();
-            mPlayBackPosition = mSimpleExoPlayer.getCurrentPosition();
             mSimpleExoPlayer.release();
             mSimpleExoPlayer = null;
         }
@@ -211,8 +218,13 @@ public class DetailFoodStep extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(ConstantString.TAG_PLAYWHENREADY, mPlayWhenReady);
-        outState.putInt(ConstantString.TAG_CURRENTWINDOW, mCurrentWindow);
-        outState.putLong(ConstantString.TAG_EXOPOSITION, mPlayBackPosition);
+        if (mSimpleExoPlayer != null) {
+            mPlayWhenReady = mSimpleExoPlayer.getPlayWhenReady();
+            mCurrentWindow = mSimpleExoPlayer.getCurrentWindowIndex();
+            mPlayBackPosition = mSimpleExoPlayer.getCurrentPosition();
+            outState.putLong(ConstantString.TAG_EXOPOSITION, mPlayBackPosition);
+            outState.putBoolean(ConstantString.TAG_PLAYWHENREADY, mPlayWhenReady);
+            outState.putInt(ConstantString.TAG_CURRENTWINDOW, mCurrentWindow);
+        }
     }
 }
