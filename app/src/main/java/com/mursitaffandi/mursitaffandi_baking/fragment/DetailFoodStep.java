@@ -71,14 +71,15 @@ public class DetailFoodStep extends Fragment {
 
     private boolean mPlayWhenReady = true;
     private int mCurrentWindow;
-    public long mPlayBackPosition;
+    private long mPlayBackPosition;
 
     public DetailFoodStep() {
     }
-
+private String testInstance = "-";
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        testInstance = "onCreateView";
         View view = inflater.inflate(R.layout.fragment_detailfoodstep, container, false);
         ButterKnife.bind(this, view);
         btnNext.setOnClickListener(new View.OnClickListener() {
@@ -114,6 +115,7 @@ public class DetailFoodStep extends Fragment {
 
         if (mFirst) btnPrev.setVisibility(View.GONE);
         if (mLast) btnNext.setVisibility(View.GONE);
+        Log.d("test_onCreateView", testInstance);
 
         return view;
     }
@@ -121,12 +123,17 @@ public class DetailFoodStep extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mPlayBackPosition  = 99;
+testInstance = "onActivityCreated";
         if (savedInstanceState != null) {
+            testInstance = "set from savedInstanceState";
+
             mPlayBackPosition = savedInstanceState.getLong(ConstantString.TAG_EXOPOSITION);
             mCurrentWindow = savedInstanceState.getInt(ConstantString.TAG_CURRENTWINDOW);
             mPlayWhenReady = savedInstanceState.getBoolean(ConstantString.TAG_PLAYWHENREADY);
         }
+        Log.d("suck_onActivityCreated", String.valueOf(mPlayBackPosition));
+
+        Log.d("test_onActivityCreated", testInstance);
     }
 
     private final EventBus eventBus = ApplicationBase.getInstance().getEventBus();
@@ -149,7 +156,8 @@ public class DetailFoodStep extends Fragment {
     }
 
     private void initPlayer() {
-        Log.d("init", String.valueOf(mPlayBackPosition));
+        Log.d("test_initPlayer", testInstance);
+
         mSimpleExoPlayer = ExoPlayerFactory.newSimpleInstance(
                 new DefaultRenderersFactory(getContext()),
                 new DefaultTrackSelector(),
@@ -157,6 +165,7 @@ public class DetailFoodStep extends Fragment {
         );
 
         stepExoplayer.setPlayer(mSimpleExoPlayer);
+        Log.d("suck_initPlayer", String.valueOf(mPlayBackPosition));
 
         mSimpleExoPlayer.seekTo(mCurrentWindow, mPlayBackPosition);
         mSimpleExoPlayer.setPlayWhenReady(mPlayWhenReady);
@@ -218,6 +227,7 @@ public class DetailFoodStep extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        testInstance = "set in onSaveInstanceState";
         if (mSimpleExoPlayer != null) {
             mPlayWhenReady = mSimpleExoPlayer.getPlayWhenReady();
             mCurrentWindow = mSimpleExoPlayer.getCurrentWindowIndex();
@@ -226,5 +236,8 @@ public class DetailFoodStep extends Fragment {
             outState.putBoolean(ConstantString.TAG_PLAYWHENREADY, mPlayWhenReady);
             outState.putInt(ConstantString.TAG_CURRENTWINDOW, mCurrentWindow);
         }
+        Log.d("test_onSaveInstance", testInstance);
+        Log.d("suck_onSaveInstance", String.valueOf(mPlayBackPosition));
+
     }
 }
