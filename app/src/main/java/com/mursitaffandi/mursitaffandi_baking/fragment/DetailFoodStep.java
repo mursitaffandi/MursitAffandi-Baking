@@ -75,11 +75,11 @@ public class DetailFoodStep extends Fragment {
 
     public DetailFoodStep() {
     }
-private String testInstance = "-";
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        testInstance = "onCreateView";
         View view = inflater.inflate(R.layout.fragment_detailfoodstep, container, false);
         ButterKnife.bind(this, view);
         btnNext.setOnClickListener(new View.OnClickListener() {
@@ -115,7 +115,6 @@ private String testInstance = "-";
 
         if (mFirst) btnPrev.setVisibility(View.GONE);
         if (mLast) btnNext.setVisibility(View.GONE);
-        Log.d("test_onCreateView", testInstance);
 
         return view;
     }
@@ -123,17 +122,11 @@ private String testInstance = "-";
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-testInstance = "onActivityCreated";
         if (savedInstanceState != null) {
-            testInstance = "set from savedInstanceState";
-
             mPlayBackPosition = savedInstanceState.getLong(ConstantString.TAG_EXOPOSITION);
             mCurrentWindow = savedInstanceState.getInt(ConstantString.TAG_CURRENTWINDOW);
             mPlayWhenReady = savedInstanceState.getBoolean(ConstantString.TAG_PLAYWHENREADY);
         }
-        Log.d("suck_onActivityCreated", String.valueOf(mPlayBackPosition));
-
-        Log.d("test_onActivityCreated", testInstance);
     }
 
     private final EventBus eventBus = ApplicationBase.getInstance().getEventBus();
@@ -156,8 +149,6 @@ testInstance = "onActivityCreated";
     }
 
     private void initPlayer() {
-        Log.d("test_initPlayer", testInstance);
-
         mSimpleExoPlayer = ExoPlayerFactory.newSimpleInstance(
                 new DefaultRenderersFactory(getContext()),
                 new DefaultTrackSelector(),
@@ -165,7 +156,6 @@ testInstance = "onActivityCreated";
         );
 
         stepExoplayer.setPlayer(mSimpleExoPlayer);
-        Log.d("suck_initPlayer", String.valueOf(mPlayBackPosition));
 
         mSimpleExoPlayer.seekTo(mCurrentWindow, mPlayBackPosition);
         mSimpleExoPlayer.setPlayWhenReady(mPlayWhenReady);
@@ -207,6 +197,8 @@ testInstance = "onActivityCreated";
         if (Util.SDK_INT <= 23) {
             releaseExoPlayer();
         }
+        Log.d("suck_onPause", String.valueOf(mPlayBackPosition));
+
     }
 
     @Override
@@ -215,6 +207,7 @@ testInstance = "onActivityCreated";
         if (Util.SDK_INT >= 24) {
             releaseExoPlayer();
         }
+
     }
 
     private void releaseExoPlayer() {
@@ -227,7 +220,6 @@ testInstance = "onActivityCreated";
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        testInstance = "set in onSaveInstanceState";
         if (mSimpleExoPlayer != null) {
             mPlayWhenReady = mSimpleExoPlayer.getPlayWhenReady();
             mCurrentWindow = mSimpleExoPlayer.getCurrentWindowIndex();
@@ -235,9 +227,8 @@ testInstance = "onActivityCreated";
             outState.putLong(ConstantString.TAG_EXOPOSITION, mPlayBackPosition);
             outState.putBoolean(ConstantString.TAG_PLAYWHENREADY, mPlayWhenReady);
             outState.putInt(ConstantString.TAG_CURRENTWINDOW, mCurrentWindow);
+        }else{
+            outState.putLong(ConstantString.TAG_EXOPOSITION, mPlayBackPosition);
         }
-        Log.d("test_onSaveInstance", testInstance);
-        Log.d("suck_onSaveInstance", String.valueOf(mPlayBackPosition));
-
     }
 }
