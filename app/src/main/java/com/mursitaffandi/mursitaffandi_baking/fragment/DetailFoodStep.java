@@ -1,5 +1,6 @@
 package com.mursitaffandi.mursitaffandi_baking.fragment;
 
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -76,6 +77,22 @@ public class DetailFoodStep extends Fragment {
     public DetailFoodStep() {
     }
 
+    private final EventBus eventBus = ApplicationBase.getInstance().getEventBus();
+    private final FootStepClick event = new FootStepClick();
+    private SharedPreferences.Editor preferencesExo = ApplicationBase.getInstance().getPrefs().edit();
+    private SharedPreferences preferencesExoGet = ApplicationBase.getInstance().getPrefs();
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            mPlayBackPosition = savedInstanceState.getLong(ConstantString.TAG_EXOPOSITION);
+            mCurrentWindow = savedInstanceState.getInt(ConstantString.TAG_CURRENTWINDOW);
+            mPlayWhenReady = savedInstanceState.getBoolean(ConstantString.TAG_PLAYWHENREADY);
+        }
+            mPlayBackPosition = preferencesExoGet.getLong(ConstantString.TAG_PREF_EXOPOSITION, 0L);
+
+    }
 
     @Nullable
     @Override
@@ -119,27 +136,18 @@ public class DetailFoodStep extends Fragment {
         return view;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null) {
-            mPlayBackPosition = savedInstanceState.getLong(ConstantString.TAG_EXOPOSITION);
-            mCurrentWindow = savedInstanceState.getInt(ConstantString.TAG_CURRENTWINDOW);
-            mPlayWhenReady = savedInstanceState.getBoolean(ConstantString.TAG_PLAYWHENREADY);
-        }
-    }
-
-    private final EventBus eventBus = ApplicationBase.getInstance().getEventBus();
-    private final FootStepClick event = new FootStepClick();
-
     private void gotoPrevStep() {
         event.setClickPosition(mNumber - 1);
         eventBus.post(event);
+        preferencesExo.putLong(ConstantString.TAG_PREF_EXOPOSITION, 0L);
+        preferencesExo.apply();
     }
 
     private void gotoNextStep() {
         event.setClickPosition(mNumber + 1);
         eventBus.post(event);
+        preferencesExo.putLong(ConstantString.TAG_PREF_EXOPOSITION, 0L);
+        preferencesExo.apply();
     }
 
     private MediaSource createMediaSource(Uri uri) {
@@ -167,7 +175,14 @@ public class DetailFoodStep extends Fragment {
             Uri uri = null;
             if (!TextUtils.isEmpty(mStep.getVideoURL())) {
                 uri = Uri.parse(mStep.getVideoURL());
-            } else if (!TextUtils.isEmpty(mStep.getThumbnailURL()) && mStep.getThumbnailURL().substring(mStep.getThumbnailURL().length() - 4, mStep.getThumbnailURL().length()).equals(".mp4")) {
+            } else if (
+                    !TextUtils.isEmpty(mStep.getThumbnailURL())
+                            && mStep.getThumbnailURL()
+                            .substring(mStep.getThumbnailURL()
+                                    .length() - 4,
+                                    mStep.getThumbnailURL()
+                                            .length())
+                            .equals(".mp4")) {
                 uri = Uri.parse(mStep.getThumbnailURL());
             }
             MediaSource mediaSource = createMediaSource(uri);
@@ -197,8 +212,6 @@ public class DetailFoodStep extends Fragment {
         if (Util.SDK_INT <= 23) {
             releaseExoPlayer();
         }
-        Log.d("suck_onPause", String.valueOf(mPlayBackPosition));
-
     }
 
     @Override
@@ -227,7 +240,9 @@ public class DetailFoodStep extends Fragment {
             outState.putLong(ConstantString.TAG_EXOPOSITION, mPlayBackPosition);
             outState.putBoolean(ConstantString.TAG_PLAYWHENREADY, mPlayWhenReady);
             outState.putInt(ConstantString.TAG_CURRENTWINDOW, mCurrentWindow);
-        }else{
+            preferencesExo.putLong(ConstantString.TAG_PREF_EXOPOSITION, mPlayBackPosition);
+            preferencesExo.apply();
+        } else {
             outState.putLong(ConstantString.TAG_EXOPOSITION, mPlayBackPosition);
         }
     }

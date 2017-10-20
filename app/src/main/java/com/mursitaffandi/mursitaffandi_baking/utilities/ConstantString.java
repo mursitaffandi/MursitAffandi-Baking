@@ -18,4 +18,5 @@ public class ConstantString {
     public static final String TAG_PLAYWHENREADY= "ready";
     public static final String TAG_EXOPOSITION = "position";
     public static final String TAG_CURRENTWINDOW = "window";
+    public static final String TAG_PREF_EXOPOSITION = "exo_position";
 }

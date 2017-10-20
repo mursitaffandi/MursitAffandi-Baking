@@ -1,5 +1,6 @@
 package com.mursitaffandi.mursitaffandi_baking.fragment;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
@@ -43,6 +44,7 @@ public class DetailFood extends Fragment implements RecyleClick_step{
     private String fullIngredient;
     private final EventBus eventBus = ApplicationBase.getInstance().getEventBus();
     StepList_adapter stepsAdapter;
+    SharedPreferences.Editor preferencesExo = ApplicationBase.getInstance().getPrefs().edit();
     public DetailFood() {
     }
 
@@ -82,5 +84,7 @@ public class DetailFood extends Fragment implements RecyleClick_step{
         FootStepClick event = new FootStepClick();
         event.setClickPosition(stepPosition);
         eventBus.post(event);
+        preferencesExo.putLong(ConstantString.TAG_PREF_EXOPOSITION, 0L);
+        preferencesExo.apply();
     }
 }

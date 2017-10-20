@@ -1,6 +1,9 @@
 package com.mursitaffandi.mursitaffandi_baking;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -18,7 +21,7 @@ private static ApplicationBase instance;
     public ApplicationBase(){
         instance = this;
     }
-
+    private SharedPreferences prefs;
     public static ApplicationBase getInstance(){
         return instance;
     }
@@ -28,6 +31,11 @@ private static ApplicationBase instance;
         super.onCreate();
         createGson();
         createEventBus();
+        createPreference();
+    }
+
+    private void createPreference() {
+        prefs = PreferenceManager.getDefaultSharedPreferences(instance);
     }
 
     private void createEventBus() {
@@ -44,6 +52,10 @@ private static ApplicationBase instance;
 
     public EventBus getEventBus() {
         return eventBus;
+    }
+
+    public SharedPreferences getPrefs(){
+        return prefs;
     }
 }
 

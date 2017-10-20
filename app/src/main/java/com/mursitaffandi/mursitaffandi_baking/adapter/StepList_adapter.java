@@ -76,7 +76,6 @@ public class StepList_adapter extends RecyclerView.Adapter<StepList_adapter.View
 
                     mSelectedStep = getAdapterPosition();
                     mFootStepClick.onStepClick(mSelectedStep);
-
                     notifyDataSetChanged();
                 }
             });
