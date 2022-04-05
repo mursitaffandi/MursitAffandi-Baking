@@ -1,22 +1,19 @@
 package com.mursitaffandi.mursitaffandi_baking.adapter;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.mursitaffandi.mursitaffandi_baking.ApplicationBase;
 import com.mursitaffandi.mursitaffandi_baking.R;
 import com.mursitaffandi.mursitaffandi_baking.event.RecyleClick_step;
 import com.mursitaffandi.mursitaffandi_baking.model.MultiStep;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Ingat Mati on 19/09/2017.
@@ -46,12 +43,18 @@ public class StepList_adapter extends RecyclerView.Adapter<StepList_adapter.View
         holder.tv_step.setText(mMultiStep.getStepList().get(position).getShortDescription());
         final Context context = holder.itemView.getContext();
         if (mSelectedStep == position) {
-            holder.itemView.setBackgroundColor(ContextCompat.getColor(context, android.R.color.black));
+            holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.black));
             holder.tv_step.setTextColor(ApplicationBase.getInstance().getResources().getColor(R.color.cardview_light_background));
             holder.iv_step.setImageResource(R.mipmap.ic_item_step_selected);
         } else {
-            holder.itemView.setBackgroundColor(ContextCompat.getColor(context, android.R.color.white));
+            holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.white));
         }
+
+        holder.itemView.setOnClickListener(view -> {
+            mSelectedStep = position;
+            mFootStepClick.onStepClick(mSelectedStep);
+            notifyDataSetChanged();
+        });
     }
 
     @Override
@@ -60,25 +63,15 @@ public class StepList_adapter extends RecyclerView.Adapter<StepList_adapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.tv_itemStep)
         TextView tv_step;
-        @BindView(R.id.iv_itemStep)
         ImageView iv_step;
-        @BindView(R.id.cv_itemstep)
         CardView cv_step;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
-            cv_step.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    mSelectedStep = getAdapterPosition();
-                    mFootStepClick.onStepClick(mSelectedStep);
-                    notifyDataSetChanged();
-                }
-            });
+            tv_step = itemView.findViewById(R.id.tv_itemStep);
+            iv_step = itemView.findViewById(R.id.iv_itemStep);
+            cv_step = itemView.findViewById(R.id.cv_itemstep);
         }
     }
 }

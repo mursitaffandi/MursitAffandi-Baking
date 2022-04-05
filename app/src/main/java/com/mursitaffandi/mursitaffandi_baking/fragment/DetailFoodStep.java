@@ -3,16 +3,17 @@ package com.mursitaffandi.mursitaffandi_baking.fragment;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -25,20 +26,15 @@ import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
-
 import com.google.android.exoplayer2.util.Util;
 import com.mursitaffandi.mursitaffandi_baking.ApplicationBase;
-import com.mursitaffandi.mursitaffandi_baking.activity.DetailFoodActivity;
 import com.mursitaffandi.mursitaffandi_baking.R;
+import com.mursitaffandi.mursitaffandi_baking.activity.DetailFoodActivity;
 import com.mursitaffandi.mursitaffandi_baking.event.FootStepClick;
 import com.mursitaffandi.mursitaffandi_baking.model.Step;
 import com.mursitaffandi.mursitaffandi_baking.utilities.ConstantString;
 
 import org.greenrobot.eventbus.EventBus;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * An activity representing a single DetailFood detail screen. This
  * activity is only used narrow width devices. On tablet-size devices,
@@ -46,20 +42,10 @@ import butterknife.ButterKnife;
  * in a {@link DetailFoodActivity}.
  */
 public class DetailFoodStep extends Fragment {
-    @BindView(R.id.exoui_frgdetailstep)
     SimpleExoPlayerView stepExoplayer;
-
-
-    @BindView(R.id.detail_step_image)
     ImageView ivDetailStep;
-
-    @BindView(R.id.tv_frgdetailstep_stepinstruction)
     TextView tvDetailStep;
-
-    @BindView(R.id.btn_frgdetailstep_prev)
     Button btnPrev;
-
-    @BindView(R.id.btn_frgdetailstep_next)
     Button btnNext;
 
     private Step mStep;
@@ -82,8 +68,8 @@ public class DetailFoodStep extends Fragment {
     private SharedPreferences.Editor preferencesExo = ApplicationBase.getInstance().getPrefs().edit();
     private SharedPreferences preferencesExoGet = ApplicationBase.getInstance().getPrefs();
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    /*@Override
+    public void onActivityCreated( Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
             mPlayBackPosition = savedInstanceState.getLong(ConstantString.TAG_EXOPOSITION);
@@ -93,12 +79,28 @@ public class DetailFoodStep extends Fragment {
             mPlayBackPosition = preferencesExoGet.getLong(ConstantString.TAG_PREF_EXOPOSITION, 0L);
 
     }
+    */
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (savedInstanceState != null) {
+            mPlayBackPosition = savedInstanceState.getLong(ConstantString.TAG_EXOPOSITION);
+            mCurrentWindow = savedInstanceState.getInt(ConstantString.TAG_CURRENTWINDOW);
+            mPlayWhenReady = savedInstanceState.getBoolean(ConstantString.TAG_PLAYWHENREADY);
+        }
+        mPlayBackPosition = preferencesExoGet.getLong(ConstantString.TAG_PREF_EXOPOSITION, 0L);
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detailfoodstep, container, false);
-        ButterKnife.bind(this, view);
+        stepExoplayer = view.findViewById(R.id.exoui_frgdetailstep);
+        ivDetailStep = view.findViewById(R.id.detail_step_image);
+        tvDetailStep = view.findViewById(R.id.tv_frgdetailstep_stepinstruction);
+        btnPrev = view.findViewById(R.id.btn_frgdetailstep_prev);
+        btnNext = view.findViewById(R.id.btn_frgdetailstep_next);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,10 +123,10 @@ public class DetailFoodStep extends Fragment {
         ivDetailStep.setVisibility(View.GONE);
         if (!TextUtils.isEmpty(mStep.getThumbnailURL()) && !mStep.getThumbnailURL().substring(mStep.getThumbnailURL().length() - 4, mStep.getThumbnailURL().length()).equals(".mp4")) {
             ivDetailStep.setVisibility(View.VISIBLE);
-            Glide.with(getContext())
+            /*Glide.with(view.getContext())
                     .load(mStep.getThumbnailURL())
                     .placeholder(R.mipmap.ic_launcher)
-                    .into(ivDetailStep);
+                    .into(ivDetailStep);*/
         }
 
         btnNext.setVisibility(View.VISIBLE);

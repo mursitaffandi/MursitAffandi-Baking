@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:padding="16dp">
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_list_config_widget"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -39,10 +39,10 @@
             android:id="@+id/btn_rerequest_widgetfood"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/main_error_icon"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp"
             android:gravity="center"
+            android:layout_below="@+id/iv_error_widgetfood"
             android:text="@string/btn_rerequest"
             android:textColor="@color/colorPrimaryDark" />
     </RelativeLayout>

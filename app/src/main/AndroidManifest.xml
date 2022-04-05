@@ -12,14 +12,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.WelcomeActivity">
+        <activity android:name=".activity.WelcomeActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.List_food" />
         <activity
             android:name=".activity.DetailFoodActivity"
             android:parentActivityName=".activity.List_food">
@@ -27,8 +27,10 @@
                             android:name="android.support.PARENT_ACTIVITY"
                             android:value="com.mursitaffandi.mursitaffandi_baking.activity.List_food" />-->
         </activity>
+        <activity android:name=".activity.List_food"/>
 
-        <receiver android:name=".NewAppWidget">
+        <receiver android:name=".NewAppWidget"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -38,7 +40,8 @@
                 android:resource="@xml/new_app_widget_info" />
         </receiver>
 
-        <activity android:name=".activity.NewAppWidgetConfigureActivity">
+        <activity android:name=".activity.NewAppWidgetConfigureActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>

@@ -1,18 +1,16 @@
 package com.mursitaffandi.mursitaffandi_baking.adapter;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.mursitaffandi.mursitaffandi_baking.R;
 import com.mursitaffandi.mursitaffandi_baking.event.WidgetClick_food;
 import com.mursitaffandi.mursitaffandi_baking.model.MultiBaking;
 import com.mursitaffandi.mursitaffandi_baking.model.MultiIngredient;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Ingat Mati on 23/09/2017.
@@ -36,12 +34,9 @@ public class WidgetConfiguration_adapter extends RecyclerView.Adapter<WidgetConf
     @Override
     public void onBindViewHolder(ItemWidget_viewholder holder, final int position) {
         holder.tv_itemWidget.setText(mMultiBaking.getBaking().get(position).getName());
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mWidgetClickFood.OnWidgetItemClick(new MultiIngredient(mMultiBaking.getBaking().get(position).getIngredients()), position);
-            }
-        });
+        holder.itemView.setOnClickListener(view ->
+                mWidgetClickFood.OnWidgetItemClick(new MultiIngredient(mMultiBaking.getBaking().get(holder.getBindingAdapterPosition()).getIngredients()), holder.getBindingAdapterPosition())
+        );
     }
 
     @Override
@@ -50,12 +45,12 @@ public class WidgetConfiguration_adapter extends RecyclerView.Adapter<WidgetConf
     }
 
     public class ItemWidget_viewholder extends RecyclerView.ViewHolder {
-        @BindView(R.id.tv_itemWidget)
+
         TextView tv_itemWidget;
 
         public ItemWidget_viewholder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            tv_itemWidget = itemView.findViewById(R.id.tv_itemWidget);
         }
     }
 }

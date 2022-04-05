@@ -5,12 +5,13 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.RemoteViews;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.mursitaffandi.mursitaffandi_baking.ApplicationBase;
 import com.mursitaffandi.mursitaffandi_baking.NewAppWidget;
@@ -28,9 +29,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * The configuration screen for the {@link NewAppWidget NewAppWidget} AppWidget.
  */
@@ -38,15 +36,11 @@ public class NewAppWidgetConfigureActivity extends Activity implements WidgetCli
     private WidgetConfiguration_adapter widgetConfiguration_adapter;
     private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     private Welcome mControllerWelcome;
-    @BindView(R.id.rv_list_config_widget)
     RecyclerView mRecyclerView;
 
-    @BindView(R.id.btn_rerequest_widgetfood)
     Button btn_request;
-    @BindView(R.id.rl_error_widgetfood)
     RelativeLayout error_layout;
 
-    @BindView(R.id.rl_progress_widgetfood)
     RelativeLayout progress_layout;
     MultiBaking mBaking;
     private EventBus eventBus;
@@ -65,8 +59,11 @@ public class NewAppWidgetConfigureActivity extends Activity implements WidgetCli
         setResult(RESULT_CANCELED);
 
         setContentView(R.layout.new_app_widget_configure);
+        mRecyclerView = findViewById(R.id.rv_list_config_widget);
+        btn_request = findViewById(R.id.btn_rerequest_widgetfood);
+        error_layout = findViewById(R.id.rl_error_widgetfood);
+        progress_layout = findViewById(R.id.rl_progress_widgetfood);
         eventBus = ApplicationBase.getInstance().getEventBus();
-        ButterKnife.bind(this);
         if (icicle != null && icicle.containsKey(ConstantString.TAG_WIDGET_STATE)) {
             progress_layout.setVisibility(View.INVISIBLE);
             mRecyclerView.setVisibility(View.VISIBLE);

@@ -1,10 +1,11 @@
 package com.mursitaffandi.mursitaffandi_baking.activity;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.mursitaffandi.mursitaffandi_baking.ApplicationBase;
 import com.mursitaffandi.mursitaffandi_baking.R;
@@ -20,8 +21,6 @@ import com.mursitaffandi.mursitaffandi_baking.utilities.ConstantString;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import butterknife.ButterKnife;
 
 public class DetailFoodActivity extends AppCompatActivity {
 
@@ -40,7 +39,6 @@ public class DetailFoodActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detailfood_list);
-       ButterKnife.bind(this);
 
         mBaking = getIntent().getParcelableExtra(ConstantString.TAG_DETAIL_FOOT);
         stepList = new MultiStep(mBaking.getSteps());
